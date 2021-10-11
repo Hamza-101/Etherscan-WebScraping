@@ -28,7 +28,6 @@ for i in range (ga.size-1):
         url="https://etherscan.io/token/"+str(fj)+"#readContract"
 
 
-#driver = webdriver.Chrome()
 
         driver.get(url)
 

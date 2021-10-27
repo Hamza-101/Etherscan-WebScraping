@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import csv
@@ -9,6 +8,7 @@ import string
 from csv import reader,writer
 import code
 import pandas
+import re
 
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -19,16 +19,20 @@ from selenium.webdriver.common.by import By
 
 
 ga=pandas.read_csv("adresses.csv")
+file= open('script_public_variables.csv', 'a')
+writer = csv.writer(file)
 
 for i in range (ga.size-1):
         
-        fj=ga.iloc[i+1][0]
+        fj=ga.iloc[i][0]
         print(fj)
+        print(i)
         driver = webdriver.Firefox()
         url="https://etherscan.io/token/"+str(fj)+"#readContract"
 
 
-
+#driver = webdriver.Chrome()
+        
         driver.get(url)
 
         time.sleep(5)  # JavaScript needs time to add elements on page
@@ -49,26 +53,28 @@ for i in range (ga.size-1):
         print(val)
         driver1.close()
 
-        fd=[]
-        c=[]
-
+        ha=[]
         num=len(sik)
+        print(i)
+        
         for i in range(1,(num+1)):
             print('---', i, '---')
-            fd.append(driver.find_element_by_id(f"readHeading{i}").text)
-            c.append(driver.find_element_by_id(f"readCollapse{i}").text)
             
+            fd=(driver.find_element_by_id(f"readHeading{i}").text)
+            fd = re.sub("[0-9]", "",fd)
+            
+            
+            c=(driver.find_element_by_id(f"readCollapse{i}").text)
+            print(c)
+            if(c.find('Query') == -1):
+                data=[fj,fd,c,val]
+                print(data)
+                # fd.replace(",", "")
+                # c.replace(",","")
+                writer.writerow(data)        
 
         print(fd)
         print(c)
+ 
         
-        file= open('scraping.csv', 'a')
-
-
-        writer = csv.writer(file)
-        writer.writerow(val)
-        writer.writerow(fd) 
-        writer.writerow(c) 
-        writer.writerow("\n")
-        file.close()
         driver.close()

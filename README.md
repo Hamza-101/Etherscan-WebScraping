@@ -1,6 +1,6 @@
-# Etherscan scripts
+# Etherscan-WebScraping
 
-Scripts to get Ethereum Smart Contract data from Etherrscan
+Scripts to get Ethereum Smart Contract's data from Etherscan
 
 # Installation
 
